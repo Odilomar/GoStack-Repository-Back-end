@@ -29,7 +29,7 @@ app.post("/repositories", (request, response) => {
         like
     };
 
-    repositories.push(repositories);
+    repositories.push(repository);
 
     return response.status(201).json(repository);
 });
