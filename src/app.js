@@ -16,7 +16,7 @@ app.get("/repositories", (request, response) => {
 
 app.post("/repositories", (request, response) => {
     const { title, url, techs } = request.body;
-    const like = 0;
+    const likes = 0;
 
     if (!title || !url || !techs)
         return response.status(400).json({ error: "Params is incorrect!" });
@@ -26,7 +26,7 @@ app.post("/repositories", (request, response) => {
         title,
         url,
         techs,
-        like,
+        likes,
     };
 
     repositories.push(repository);
@@ -50,12 +50,14 @@ app.put("/repositories/:id", (request, response) => {
     url = url ? url : oldRepository.url;
     title = title ? title : oldRepository.title;
     techs = techs ? techs : oldRepository.techs;
+    const likes = oldRepository.likes;
 
     const repository = {
         id,
         title,
         url,
         techs,
+        likes
     };
 
     repositories[repositoryIndex] = repository;
@@ -90,7 +92,7 @@ app.post("/repositories/:id/like", (request, response) => {
             .status(400)
             .json({ error: "Repository ID does not exists!" });
 
-    repositories[repositoryIndex].like += 1;
+    repositories[repositoryIndex].likes += 1;
 
     const repository = repositories[repositoryIndex];
 
