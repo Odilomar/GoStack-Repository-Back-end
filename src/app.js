@@ -35,18 +35,47 @@ app.post("/repositories", (request, response) => {
 });
 
 app.put("/repositories/:id", (request, response) => {
-    // TODO
+    const { id } = request.params;
+    let { url, title, techs } = request.body;
+
+    const repositoryIndex = repositories.findIndex(
+        (repository) => repository.id == id
+    );
+
+    if (repositoryIndex < 0)
+        return response.status(400).json({ error: "Repository not found!" });
+
+    const oldRepository = repositories[repositoryIndex];
+
+    url = url ? url : oldRepository.url;
+    title = title ? title : oldRepository.title;
+    techs = techs ? techs : oldRepository.techs;
+
+    const repository = {
+        id,
+        title,
+        url,
+        techs,
+    };
+
+    repositories[repositoryIndex] = repository;
+
+    return response.json(repository);
 });
 
 app.delete("/repositories/:id", (request, response) => {
-    // TODO
+    const { id } = request.params;
+
+    const repositoryIndex = repositories.findIndex(
+        (repository) => repository.id == id
+    );
+
+    if (repositoryIndex < 0)
+        return response.status(400).json({ error: "Repository not found!" });
 });
 
 app.post("/repositories/:id/like", (request, response) => {
     const { id } = request.params;
-
-    if (!isUuid(id))
-        return response.status(400).json({ error: "ID is not valid!" });
 
     const repositoryIndex = repositories.findIndex(
         (repository) => repository.id == id
